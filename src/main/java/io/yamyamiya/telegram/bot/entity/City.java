@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 
+import java.util.HashSet;
 import java.util.Set;
 
 @Entity
@@ -28,13 +29,14 @@ public class City {
     private double longitude;
 
     @JsonIgnore
-    @ManyToMany(fetch = FetchType.EAGER)
+    @ManyToMany(fetch = FetchType.EAGER,
+            cascade = CascadeType.ALL)
     @JoinTable(
             name="user_city",
             joinColumns = @JoinColumn(name="city_id"),
             inverseJoinColumns = @JoinColumn(name="user_id")
     )
-    private Set<User> usersForCities;
+    private Set<User> usersForCities = new HashSet<>();
 
     public City() {
     }

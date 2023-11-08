@@ -60,7 +60,7 @@ public class TelegramBot extends TelegramLongPollingBot {
         if (locatorResult instanceof Result.Success<Location>) {
 
             Location location = ((Result.Success<Location>) locatorResult).getValue();
-            cityService.add(location);
+            cityService.add(location, user);
 
             Result<Forecast>  forecastResponse= weatherForecast.forecast(location);
 

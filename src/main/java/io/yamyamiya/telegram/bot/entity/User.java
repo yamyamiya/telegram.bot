@@ -55,7 +55,8 @@ public class User implements UserDetails {
     private Set<Role> roles;
 
     @JsonIgnore
-    @ManyToMany(fetch = FetchType.EAGER)
+    @ManyToMany(fetch = FetchType.EAGER,
+            cascade = CascadeType.ALL)
     @JoinTable(
             name="user_city",
             joinColumns=@JoinColumn(name="user_id"),

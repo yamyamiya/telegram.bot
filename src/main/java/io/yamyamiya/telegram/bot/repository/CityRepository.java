@@ -11,6 +11,9 @@ public interface CityRepository extends JpaRepository<City, Integer> {
     @Transactional
     void deleteByName(String name);
 
-    @Query(value = "SELECT count(*) FROM user_city WHERE city_id= :id;", nativeQuery = true)
-    int getUserCountById(int id);
+    @Query(value = "SELECT count(*) FROM user_city WHERE city_id= :id", nativeQuery = true)
+    int getUserCountByCityId(int id);
+
+    @Query(value = "SELECT count(*) FROM user_city WHERE user_id= :id", nativeQuery = true)
+    int getCityCountByUserId(int id);
 }

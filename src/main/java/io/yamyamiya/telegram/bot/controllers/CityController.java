@@ -20,16 +20,17 @@ public class CityController {
     public List<City> getAll(){
         return cityService.getAll();
     }
+
     @GetMapping("/id/{id}")
     public City getById(@PathVariable int id){
         return cityService.getById(id);
     }
 
     @PostMapping
-    public Location add(@Valid @RequestBody Location location){
+    public boolean add(@Valid @RequestBody Location location){
         try {
             cityService.add(location);
-            return location;
+            return true;
         } catch (Exception e) {
             throw new EntityValidationException(e.getMessage());
         }
@@ -51,9 +52,13 @@ public class CityController {
     }
 
     @GetMapping("/usercount/{id}")
-    public int getUserCountById(@PathVariable int id){
-        return cityService.getUserCountById(id);
+    public int getUserCountByCityId(@PathVariable int id){
+        return cityService.getUserCountByCityId(id);
     }
 
+    @GetMapping("/citycount/{id}")
+    public int getCityCountByUserId(@PathVariable int id){
+        return cityService.getCityCountByUserId(id);
+    }
 
 }
