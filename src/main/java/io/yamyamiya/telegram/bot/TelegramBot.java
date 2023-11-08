@@ -1,10 +1,15 @@
 package io.yamyamiya.telegram.bot;
 
-import com.theokanning.openai.completion.chat.ChatCompletionChoice;
-import com.theokanning.openai.completion.chat.ChatCompletionRequest;
-import com.theokanning.openai.completion.chat.ChatMessage;
-import com.theokanning.openai.completion.chat.ChatMessageRole;
-import com.theokanning.openai.service.OpenAiService;
+
+import io.yamyamiya.telegram.bot.dto.Forecast;
+import io.yamyamiya.telegram.bot.dto.Location;
+import io.yamyamiya.telegram.bot.entity.User;
+import io.yamyamiya.telegram.bot.service.CityService;
+import io.yamyamiya.telegram.bot.service.UserService;
+import io.yamyamiya.telegram.bot.service.location.Locator;
+import io.yamyamiya.telegram.bot.service.weather.WeatherForecast;
+import io.yamyamiya.telegram.bot.utils.Result;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
@@ -13,11 +18,22 @@ import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Component
 public class TelegramBot extends TelegramLongPollingBot {
-   private final Environment env;
+    @Autowired
+    private Locator locator;
+
+    @Autowired
+    private WeatherForecast weatherForecast;
+
+    @Autowired
+    private UserService userService;
+
+    @Autowired
+    private CityService cityService;
+
+    private final Environment env;
 
     public TelegramBot(Environment env) {
         super(env.getProperty("telegram.token"));
@@ -29,26 +45,57 @@ public class TelegramBot extends TelegramLongPollingBot {
         System.out.println();
         String message = update.getMessage().getText();
         Long chatId = update.getMessage().getChatId();
-        OpenAiService service = new OpenAiService(env.getProperty("openai.token"));
-        ChatCompletionRequest completionRequest = ChatCompletionRequest.builder()
-                .model("gpt-3.5-turbo")
-                .messages(List.of(new ChatMessage(ChatMessageRole.USER.value(), message)))
-                .build();
-        List<ChatCompletionChoice> result = service.createChatCompletion(completionRequest).getChoices();
+        Long userId = update.getMessage().getFrom().getId();
+//        update.getMessage().getDate()
+        String firstName = update.getMessage().getFrom().getFirstName();
+        String lastName = update.getMessage().getFrom().getLastName();
+        User user = new User(0, firstName, "$2a$10$NjNAiH6U9mSVC3IHeP85je1HFGGBII699yI7rKVAu9dHnpeNXioZC",chatId, null);
+
+        userService.add(user);
+
+        Result<Location> locatorResult = locator.locate(message);
+
+        SendMessage sendMessage;
+
+        if (locatorResult instanceof Result.Success<Location>) {
+
+            Location location = ((Result.Success<Location>) locatorResult).getValue();
+            cityService.add(location);
+
+            Result<Forecast>  forecastResponse= weatherForecast.forecast(location);
 
 
-        SendMessage sentMessage = SendMessage.builder()
-                .chatId(chatId)
-                .text(result.stream().map(x -> x.getMessage().getContent()).collect(Collectors.joining(", ")))
-                .build();
+            if (forecastResponse instanceof Result.Success<Forecast>) {
+
+                Forecast forecast = ((Result.Success<Forecast>) forecastResponse).getValue();
+                sendMessage = SendMessage.builder()
+                        .chatId(chatId)
+                        .parseMode("HTML")
+                        .text(String.format("On %s temperature in %s is %.2f °C. %s. \n", forecast.getDate(),location.getCity(), forecast.getTemperature().getValue(), forecast.getDescription()))
+                        .build();
+            } else {
+                sendMessage = SendMessage.builder()
+                        .chatId(chatId)
+                        .parseMode("HTML")
+                        .text(String.format("Couldn't find forecast for the city %s. \n", location.getCity()))
+                        .build();
+            }
+        } else {
+            sendMessage = SendMessage.builder()
+                    .chatId(chatId)
+                    .text(String.format("Couldn't find location in '%s'. \n", message))
+                    .build();
+        }
 
         try {
-            sendApiMethod(sentMessage);
+            sendApiMethod(sendMessage);
         } catch (TelegramApiException e) {
             throw new RuntimeException(e);
         }
-
     }
+
+
+
 
     @Override
     public void onUpdatesReceived(List<Update> updates) {
