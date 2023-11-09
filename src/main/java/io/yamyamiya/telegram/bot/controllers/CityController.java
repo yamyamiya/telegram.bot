@@ -36,6 +36,8 @@ public class CityController {
         }
     }
 
+    //не может удалить из-за констрейна с другой таблицей
+
     @DeleteMapping("/delete/{id}")
     public void deleteById(@PathVariable int id){
         cityService.deleteById(id);

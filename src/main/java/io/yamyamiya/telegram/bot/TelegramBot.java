@@ -3,8 +3,10 @@ package io.yamyamiya.telegram.bot;
 
 import io.yamyamiya.telegram.bot.dto.Forecast;
 import io.yamyamiya.telegram.bot.dto.Location;
+import io.yamyamiya.telegram.bot.entity.Message;
 import io.yamyamiya.telegram.bot.entity.User;
 import io.yamyamiya.telegram.bot.service.CityService;
+import io.yamyamiya.telegram.bot.service.MessageService;
 import io.yamyamiya.telegram.bot.service.UserService;
 import io.yamyamiya.telegram.bot.service.location.Locator;
 import io.yamyamiya.telegram.bot.service.weather.WeatherForecast;
@@ -17,6 +19,7 @@ import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 
+import java.util.Date;
 import java.util.List;
 
 @Component
@@ -33,6 +36,9 @@ public class TelegramBot extends TelegramLongPollingBot {
     @Autowired
     private CityService cityService;
 
+    @Autowired
+    private MessageService messageService;
+
     private final Environment env;
 
     public TelegramBot(Environment env) {
@@ -46,9 +52,11 @@ public class TelegramBot extends TelegramLongPollingBot {
         String message = update.getMessage().getText();
         Long chatId = update.getMessage().getChatId();
         Long userId = update.getMessage().getFrom().getId();
-//        update.getMessage().getDate()
+        Date date = new Date(update.getMessage().getDate());
         String firstName = update.getMessage().getFrom().getFirstName();
         String lastName = update.getMessage().getFrom().getLastName();
+
+        messageService.add(new Message(0, message, chatId, userId, null));
         User user = new User(0, firstName, "$2a$10$NjNAiH6U9mSVC3IHeP85je1HFGGBII699yI7rKVAu9dHnpeNXioZC",chatId, null);
 
         userService.add(user);
