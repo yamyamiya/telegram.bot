@@ -3,6 +3,7 @@ package io.yamyamiya.telegram.bot.weatherAPI;
 import io.yamyamiya.telegram.bot.dto.Forecast;
 import io.yamyamiya.telegram.bot.dto.Location;
 import io.yamyamiya.telegram.bot.dto.Temperature;
+import io.yamyamiya.telegram.bot.entity.City;
 import io.yamyamiya.telegram.bot.service.weather.WeatherForecast;
 import io.yamyamiya.telegram.bot.utils.Result;
 import io.yamyamiya.telegram.bot.weatherAPI.JSON.Example;
@@ -45,4 +46,12 @@ public class WeatherAPI implements WeatherForecast {
 
         return new Result.Failure<>();
     }
+
+    @Override
+    public Result<Forecast> forecast(City city) {
+        Location location = new Location(city.getLatitude(), city.getLongitude(), city.getName());
+        return forecast(location);
+    }
+
+
 }

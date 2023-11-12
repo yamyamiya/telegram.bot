@@ -8,7 +8,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
 
@@ -28,34 +27,47 @@ public class JpaCityService implements CityService {
         return city.orElse(null);
     }
 
+//    @Override
+//    public City add(Location location, User user) {
+//        City foundCity = cityRepository.findByName(location.getCity());
+//        if (foundCity != null){
+//            if(foundCity.getUsersForCities().contains(user)){
+//
+//                return foundCity;
+//            }
+//            else{
+//               foundCity.getUsersForCities().add(user);
+//               return cityRepository.save(foundCity);
+//            }
+//        }
+//
+//        City newCity = new City(0, location.getCity(), location.getLatitude(), location.getLongitude());
+//            newCity.getUsersForCities().add(user);
+//        return cityRepository.save(newCity);
+//    }
+
     @Override
-    public City add(Location location, User user) {
+    public City add(Location location) {
         City foundCity = cityRepository.findByName(location.getCity());
-        if (foundCity != null){
-            if(foundCity.getUsersForCities().contains(user)){
-                return foundCity;
-            }
-            else{
-               foundCity.getUsersForCities().add(user);
-               return cityRepository.save(foundCity);
-            }
+        if ( foundCity != null) {
+            return foundCity;
         }
 
         City newCity = new City(0, location.getCity(), location.getLatitude(), location.getLongitude());
-            newCity.getUsersForCities().add(user);
         return cityRepository.save(newCity);
     }
 
     @Override
-    public void add(Location location) {
-        City foundCity = cityRepository.findByName(location.getCity());
-        if ( foundCity != null) {
-            return;
-        }
+    public City add(City city, User user) {
+            if(city.getUsersForCities().contains(user)){
 
-        City newCity = new City(0, location.getCity(), location.getLatitude(), location.getLongitude());
-        cityRepository.save(newCity);
-    }
+                return city;
+            }
+            else{
+                city.getUsersForCities().add(user);
+                return cityRepository.save(city);
+            }
+        }
 
     @Override
     public void deleteById(int id) {

@@ -11,9 +11,11 @@ public interface CityService {
 
     City getById(int id);
 
-    City add(Location location, User user);
+//    City add(Location location, User user);
 
-    void add(Location location);
+    City add(Location location);
+
+    City add(City city, User user);
 
     void deleteById(int id);
 
