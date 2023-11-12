@@ -3,6 +3,7 @@ package io.yamyamiya.telegram.bot;
 
 import io.yamyamiya.telegram.bot.dto.Forecast;
 import io.yamyamiya.telegram.bot.dto.Location;
+import io.yamyamiya.telegram.bot.entity.City;
 import io.yamyamiya.telegram.bot.entity.Message;
 import io.yamyamiya.telegram.bot.entity.User;
 import io.yamyamiya.telegram.bot.service.CityService;
@@ -56,10 +57,10 @@ public class TelegramBot extends TelegramLongPollingBot {
         String firstName = update.getMessage().getFrom().getFirstName();
         String lastName = update.getMessage().getFrom().getLastName();
 
-        messageService.add(new Message(0, message, chatId, userId, null));
-        User user = new User(0, firstName, "$2a$10$NjNAiH6U9mSVC3IHeP85je1HFGGBII699yI7rKVAu9dHnpeNXioZC",chatId, null);
 
-        userService.add(user);
+        User user = new User(0, firstName, "$2a$10$NjNAiH6U9mSVC3IHeP85je1HFGGBII699yI7rKVAu9dHnpeNXioZC",chatId, null);
+        user = userService.add(user);
+        messageService.add(new Message(0, message, chatId, userId, null));
 
         Result<Location> locatorResult = locator.locate(message);
 
@@ -68,7 +69,7 @@ public class TelegramBot extends TelegramLongPollingBot {
         if (locatorResult instanceof Result.Success<Location>) {
 
             Location location = ((Result.Success<Location>) locatorResult).getValue();
-            cityService.add(location, user);
+            City city = cityService.add(location, user);
 
             Result<Forecast>  forecastResponse= weatherForecast.forecast(location);
 

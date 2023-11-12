@@ -32,11 +32,11 @@ public class JpaUserService implements UserService, UserDetailsService {
     }
 
     @Override
-    public void add(User user) {
+    public User add(User user) {
 
         User findResult = userRepository.findByChatId(user.getChatId());
         if(findResult!=null){
-            return;
+            return findResult;
         }
         User newUser = new User(0, user.getName());
 
@@ -49,8 +49,7 @@ public class JpaUserService implements UserService, UserDetailsService {
         newUser.setChatId(user.getChatId());
         newUser.setAddedAt(user.getAddedAt());
 
-        userRepository.save(newUser);
-
+        return userRepository.save(newUser);
     }
 
     @Override

@@ -30,7 +30,7 @@ public class City {
 
     @JsonIgnore
     @ManyToMany(fetch = FetchType.EAGER,
-            cascade = CascadeType.ALL)
+            cascade = CascadeType.MERGE)
     @JoinTable(
             name="user_city",
             joinColumns = @JoinColumn(name="city_id"),
