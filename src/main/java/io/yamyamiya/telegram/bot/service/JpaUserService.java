@@ -70,6 +70,11 @@ public class JpaUserService implements UserService, UserDetailsService {
     }
 
     @Override
+    public User getByChatId(long chatId) {
+        return userRepository.findByChatId(chatId);
+    }
+
+    @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         User user =userRepository.findByName(username);
         if(user==null){

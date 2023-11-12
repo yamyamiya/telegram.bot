@@ -17,4 +17,5 @@ public interface UserService {
 
     int getCount();
 
+    User getByChatId(long chatId);
 }
