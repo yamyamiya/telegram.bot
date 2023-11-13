@@ -23,7 +23,9 @@ import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Update;
+import org.telegram.telegrambots.meta.api.objects.replykeyboard.InlineKeyboardMarkup;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.ReplyKeyboardMarkup;
+import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.InlineKeyboardButton;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.KeyboardRow;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 
@@ -67,26 +69,25 @@ public class TelegramBot extends TelegramLongPollingBot {
             String data = update.getCallbackQuery().getData();
             long chatId = update.getCallbackQuery().getMessage().getChatId();
             SendMessage sendMessage;
-            if(data.startsWith("YES")){
-                String[] dataArray = data.split("|");
-                int cityIndex = Integer.parseInt(dataArray[1]);
+            if(!data.isBlank()){
+
+                int cityIndex = Integer.parseInt(data);
                 City city =cityService.getById(cityIndex);
                 ScheduledForecastTask task = new ScheduledForecastTask(String.format("Task scheduled for daily forecast for %s \n",city.getName()), chatId, cityIndex);
                 taskRepository.save(task);
                 executor.taskSchedulerTaskWithTrigger(task, this);
-                Result<Forecast>  forecastResponse= weatherForecast.forecast(city);
                 // scheduler here
                  sendMessage = SendMessage.builder()
                         .chatId(chatId)
                         .parseMode("HTML")
-                        .text(String.format("You have successfully subscribed. \n"))
+                        .text("You have successfully subscribed. \n")
                         .build();
 
             } else{
                  sendMessage = SendMessage.builder()
                         .chatId(chatId)
                         .parseMode("HTML")
-                        .text(String.format("Ok =) No subscription then. \n"))
+                        .text("Ok =) No subscription then. \n")
                         .build();
             }
             try {
@@ -107,6 +108,7 @@ public class TelegramBot extends TelegramLongPollingBot {
         Result<Location> locatorResult = locator.locate(message);
         SendMessage sendMessage;
         SendMessage subscriptionMessage = null;
+        InlineKeyboardMarkup subscriptionKeybord = null;
         boolean sentSubscription=false;
 
 
@@ -126,35 +128,29 @@ public class TelegramBot extends TelegramLongPollingBot {
 
 
             if (forecastResponse instanceof Result.Success<Forecast>) {
+                if(sentSubscription){
+                    subscriptionKeybord = new InlineKeyboardMarkup();
+                    List<InlineKeyboardButton> keyboard = new ArrayList<>();
+                    InlineKeyboardButton yesButton = new InlineKeyboardButton("Subscribe for daily forecast?");
+                    yesButton.setCallbackData(String.valueOf(city.getId()));
+                    List<List<InlineKeyboardButton>> keyboardRows = new ArrayList<>();
+
+
+
+                    keyboard.add(yesButton);
+
+                    keyboardRows.add(keyboard);
+
+                    subscriptionKeybord.setKeyboard(keyboardRows);
+                }
 
                 Forecast forecast = ((Result.Success<Forecast>) forecastResponse).getValue();
                 sendMessage = SendMessage.builder()
                         .chatId(user.getChatId())
                         .parseMode("HTML")
+                        .replyMarkup(subscriptionKeybord)
                         .text(String.format("On %s temperature in %s is %.2f °C. %s. \n", forecast.getDate(),location.getCity(), forecast.getTemperature().getValue(), forecast.getDescription()))
                         .build();
-
-                if(sentSubscription){
-                    ReplyKeyboardMarkup replyKeyboardMarkup = new ReplyKeyboardMarkup();
-                    List<KeyboardRow> keyboard = new ArrayList<>();
-                    KeyboardRow keyboardRow = new KeyboardRow();
-
-                    keyboardRow.add(String.format("YES|%d",city.getId()));
-                    keyboardRow.add("NO");
-                    keyboard.add(keyboardRow);
-
-                    replyKeyboardMarkup.setKeyboard(keyboard);
-                    replyKeyboardMarkup.setOneTimeKeyboard(true);
-
-                    subscriptionMessage = SendMessage.builder()
-                            .chatId(user.getChatId())
-                            .parseMode("HTML")
-                            .text(String.format("Do you want to subscribe for daily forecast for %s?\n", location.getCity()))
-                            .replyMarkup(replyKeyboardMarkup)
-                            .build();
-
-                    sendMessage(subscriptionMessage);
-                }
 
             } else {
                 sendMessage = SendMessage.builder()
@@ -172,10 +168,6 @@ public class TelegramBot extends TelegramLongPollingBot {
 
         try {
             sendApiMethod(sendMessage);
-
-            if (subscriptionMessage != null) {
-                sendApiMethod(subscriptionMessage);
-            }
         } catch (TelegramApiException e) {
             throw new RuntimeException(e);
         }
