@@ -29,10 +29,11 @@
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-web</artifactId>
 		</dependency>
-<!--		<dependency>-->
-<!--			<groupId>org.liquibase</groupId>-->
-<!--			<artifactId>liquibase-core</artifactId>-->
-<!--		</dependency>-->
+		<dependency>
+			<groupId>org.liquibase</groupId>
+			<artifactId>liquibase-core</artifactId>
+			<version>4.24.0</version>
+		</dependency>
 
 		<dependency>
 			<groupId>org.passay</groupId>
@@ -89,6 +90,15 @@
 						</exclude>
 					</excludes>
 				</configuration>
+			</plugin>
+			<plugin>
+					<groupId>org.liquibase</groupId>
+					<artifactId>liquibase-maven-plugin</artifactId>
+					<version>4.24.0</version>
+					<configuration>
+						<propertyFile>src/main/resources/application.properties</propertyFile>
+						<!-- Other configuration options go here -->
+					</configuration>
 			</plugin>
 		</plugins>
 	</build>
