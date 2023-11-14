@@ -7,7 +7,6 @@ import io.yamyamiya.telegram.bot.entity.City;
 import io.yamyamiya.telegram.bot.entity.Message;
 import io.yamyamiya.telegram.bot.entity.ScheduledForecastTask;
 import io.yamyamiya.telegram.bot.entity.User;
-import io.yamyamiya.telegram.bot.repository.TaskRepository;
 import io.yamyamiya.telegram.bot.schedule.ScheduleExecutor;
 import io.yamyamiya.telegram.bot.service.CityService;
 import io.yamyamiya.telegram.bot.service.MessageService;
@@ -25,9 +24,7 @@ import org.telegram.telegrambots.bots.TelegramLongPollingBot;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.InlineKeyboardMarkup;
-import org.telegram.telegrambots.meta.api.objects.replykeyboard.ReplyKeyboardMarkup;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.InlineKeyboardButton;
-import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.KeyboardRow;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 
 import java.util.ArrayList;
@@ -67,9 +64,20 @@ public class TelegramBot extends TelegramLongPollingBot {
     public void onUpdateReceived(Update update) {
 
         if (update.hasCallbackQuery()) {
+            SendMessage sendMessage;
             String data = update.getCallbackQuery().getData();
             long chatId = update.getCallbackQuery().getMessage().getChatId();
-            SendMessage sendMessage;
+            if(update.getCallbackQuery().getMessage().getReplyMarkup().getKeyboard().get(0).get(0).getText().equals("Unsubscribe?")){
+                taskService.deleteById(Integer.parseInt(update.getCallbackQuery().getData()));
+                sendMessage = SendMessage.builder()
+                        .chatId(chatId)
+                        .parseMode("HTML")
+                        .text("You have successfully unsubscribed. \n")
+                        .build();
+                sendMessage(sendMessage);
+                return;
+            }
+
 
             int cityIndex = Integer.parseInt(data);
             City city = cityService.getById(cityIndex);

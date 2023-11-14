@@ -7,4 +7,6 @@ public interface TaskService {
 
     void add(ScheduledForecastTask task);
 
+    void deleteById(int id);
+
 }

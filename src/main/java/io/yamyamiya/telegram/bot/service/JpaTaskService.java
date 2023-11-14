@@ -18,4 +18,9 @@ public class JpaTaskService implements TaskService{
     public void add(ScheduledForecastTask task) {
         taskRepository.save(task);
     }
+
+    @Override
+    public void deleteById(int id) {
+        taskRepository.deleteById(id);
+    }
 }
