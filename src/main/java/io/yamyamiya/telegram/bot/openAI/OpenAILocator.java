@@ -28,21 +28,29 @@ public class OpenAILocator implements Locator {
                 .builder()
                 .model("gpt-3.5-turbo")
                 .messages(List.of(
-                        new ChatMessage(ChatMessageRole.ASSISTANT.value(),"Act like a REST API endpoint. When you receive user input try to identify city mentioned in the message and respond in JSON format with city name, latitude and longitude. The latitude must lie in the range [-90d,90d]."),
+                        new ChatMessage(ChatMessageRole.ASSISTANT.value(), "Act like a REST API endpoint. When you receive user input try to identify city mentioned in the message and respond in JSON format with city name, latitude and longitude. The latitude must lie in the range [-90d,90d]."),
                         new ChatMessage(ChatMessageRole.USER.value(), message))
                 )
                 .build();
-        List<ChatCompletionChoice> result = service.createChatCompletion(completionRequest).getChoices();
+        try {
+            List<ChatCompletionChoice> result = service.createChatCompletion(completionRequest).getChoices();
 
-        if(!result.isEmpty()){
-            String locationJSON = result.get(0).getMessage().getContent();
-            try{
-                Location location = objectMapper.readValue(locationJSON, Location.class);
-                return new Result.Success<>(location);
-            } catch (JsonProcessingException e) {
-                return new Result.Failure<>(e);
+
+            if (!result.isEmpty()) {
+                String locationJSON = result.get(0).getMessage().getContent();
+                try {
+                    Location location = objectMapper.readValue(locationJSON, Location.class);
+                    return new Result.Success<>(location);
+                } catch (JsonProcessingException e) {
+                    return new Result.Failure<>(e);
+                }
             }
+        } catch (RuntimeException e) {
+            return new Result.Failure<>(e);
+
         }
         return new Result.Failure<>();
+
     }
+
 }
