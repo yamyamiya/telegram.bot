@@ -52,7 +52,7 @@ public class ScheduleExecutor {
                         }
                     }
                 },
-                new CronTrigger("0 12 * * *"));
+                new CronTrigger("0 12 * * * *"));
     }
 
 }
