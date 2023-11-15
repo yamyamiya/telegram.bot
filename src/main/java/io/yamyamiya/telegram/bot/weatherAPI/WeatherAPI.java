@@ -6,7 +6,7 @@ import io.yamyamiya.telegram.bot.dto.Temperature;
 import io.yamyamiya.telegram.bot.entity.City;
 import io.yamyamiya.telegram.bot.service.weather.WeatherForecast;
 import io.yamyamiya.telegram.bot.utils.Result;
-import io.yamyamiya.telegram.bot.weatherAPI.JSON.Example;
+import io.yamyamiya.telegram.bot.weatherAPI.JSON.WeatherbitForcastResponse;
 import org.springframework.core.env.Environment;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.client.RestTemplate;
@@ -29,7 +29,7 @@ public class WeatherAPI implements WeatherForecast {
     public Result<Forecast> forecast(Location location) {
         String apiKey = environment.getProperty("weather.api_key");
         String request = String.format(Locale.ENGLISH, "https://api.weatherbit.io/v2.0/current?lat=%f&lon=%f&key=%s&include=minutely\n", location.getLatitude(), location.getLongitude(), apiKey);
-        ResponseEntity<Example> response = restTemplate.getForEntity(request, Example.class);
+        ResponseEntity<WeatherbitForcastResponse> response = restTemplate.getForEntity(request, WeatherbitForcastResponse.class);
 
         if(response.getStatusCode().is2xxSuccessful()){
 
