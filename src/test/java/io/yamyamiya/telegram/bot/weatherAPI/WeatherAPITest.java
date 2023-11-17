@@ -24,12 +24,12 @@ import static org.mockito.Mockito.when;
 class WeatherAPITest {
 
     private static final String MOCK_API_KEY = "Mock API key";
-    RestTemplate restTemplate;
-    Environment environment;
-    WeatherAPI weatherAPI;
+    private RestTemplate restTemplate;
+    private Environment environment;
+    private WeatherAPI weatherAPI;
 
     @BeforeEach
-    void setUp() {
+    void init() {
         restTemplate = mock(RestTemplate.class);
         environment = mock(Environment.class);
         weatherAPI = new WeatherAPI(restTemplate, environment);
