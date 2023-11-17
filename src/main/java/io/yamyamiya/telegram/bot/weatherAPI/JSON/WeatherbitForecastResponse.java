@@ -15,7 +15,7 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
         "minutely",
         "count"
 })
-public class WeatherbitForcastResponse {
+public class WeatherbitForecastResponse {
     @JsonProperty("data")
     private List<Datum> data;
     @JsonProperty("minutely")
