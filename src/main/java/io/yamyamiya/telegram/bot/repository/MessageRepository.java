@@ -21,9 +21,6 @@ public interface MessageRepository extends JpaRepository<Message, Integer> {
     @Query(value = "SELECT count(*) FROM message WHERE created_at< :date", nativeQuery = true)
     int getCountByDateBefore(Date date);
 
-//    @Query(value = "SELECT count(*) FROM message WHERE created_at= :date", nativeQuery = true)
-//    int getCountByDate(Date date);
-
     @Query(value = "SELECT count(*) FROM message WHERE created_at between :date1 and :date2", nativeQuery = true)
     int getCountByDateBetween(Date date1, Date date2);
 }

@@ -9,8 +9,6 @@ public interface TaskRepository extends JpaRepository<ScheduledForecastTask, Int
     @Query(value = "SELECT count(*) FROM task WHERE chat_id=:chatId AND city_id= :cityId", nativeQuery = true)
     int getSubscriptionForCity(long chatId, int cityId);
 
-    //    DELETE FROM `bot-1-0`.`task` WHERE (`id` = '4');
-
     @Transactional
     void deleteById(int id);
 }
