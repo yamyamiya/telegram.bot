@@ -9,6 +9,13 @@ import org.springframework.stereotype.Service;
 public class JpaTaskService implements TaskService{
     @Autowired
     private TaskRepository taskRepository;
+
+    /**
+     * method is used in {@link io.yamyamiya.telegram.bot.TelegramBot} to check if user has subscription for certain city
+     * @param chatId
+     * @param cityId
+     * @return 1 if user has subscription and 0 if not
+     */
     @Override
     public int getSubscriptionForCity(long chatId, int cityId) {
         return taskRepository.getSubscriptionForCity(chatId, cityId);
