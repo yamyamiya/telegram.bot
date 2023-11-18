@@ -86,7 +86,6 @@ public class TelegramBot extends TelegramLongPollingBot {
                 taskService.add(task);
 
                 executor.taskSchedulerTaskWithTrigger(task, this);
-                // scheduler here
                 sendMessage = SendMessage.builder()
                         .chatId(chatId)
                         .parseMode("HTML")

@@ -73,7 +73,6 @@ public class User implements UserDetails {
         this.password = password;
         this.chatId = chatId;
         this.addedAt = Objects.requireNonNullElseGet(addedAt, Date::new);
-
     }
 
     public User(int id, String name, long chatId, Date addedAt) {

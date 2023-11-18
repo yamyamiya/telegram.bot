@@ -27,24 +27,6 @@ public class JpaCityService implements CityService {
         return city.orElse(null);
     }
 
-//    @Override
-//    public City add(Location location, User user) {
-//        City foundCity = cityRepository.findByName(location.getCity());
-//        if (foundCity != null){
-//            if(foundCity.getUsersForCities().contains(user)){
-//
-//                return foundCity;
-//            }
-//            else{
-//               foundCity.getUsersForCities().add(user);
-//               return cityRepository.save(foundCity);
-//            }
-//        }
-//
-//        City newCity = new City(0, location.getCity(), location.getLatitude(), location.getLongitude());
-//            newCity.getUsersForCities().add(user);
-//        return cityRepository.save(newCity);
-//    }
 
     @Override
     public City add(Location location) {
