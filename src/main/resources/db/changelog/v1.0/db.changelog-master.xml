@@ -1,0 +1,146 @@
+<?xml version="1.1" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog" xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext" xmlns:pro="http://www.liquibase.org/xml/ns/pro" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd http://www.liquibase.org/xml/ns/pro http://www.liquibase.org/xml/ns/pro/liquibase-pro-latest.xsd http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd">
+    <changeSet author="oljab (generated)" id="1699908772435-1">
+        <createTable tableName="city">
+            <column autoIncrement="true" name="id" type="INT">
+                <constraints nullable="false" primaryKey="true"/>
+            </column>
+            <column name="name" type="VARCHAR(45)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="latitude" type="DECIMAL(8, 5)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="longitude" type="DECIMAL(8, 5)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="oljab (generated)" id="1699908772435-2">
+        <createTable tableName="message">
+            <column autoIncrement="true" name="id" type="INT">
+                <constraints nullable="false" primaryKey="true"/>
+            </column>
+            <column name="content" type="VARCHAR(256)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="chat_id" type="BIGINT">
+                <constraints nullable="false" unique="true"/>
+            </column>
+            <column name="user_id" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="created_at" type="timestamp">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="oljab (generated)" id="1699908772435-3">
+        <createTable tableName="role">
+            <column autoIncrement="true" name="id" type="INT">
+                <constraints nullable="false" primaryKey="true"/>
+            </column>
+            <column name="name" type="VARCHAR(45)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="oljab (generated)" id="1699908772435-4">
+        <createTable tableName="user">
+            <column autoIncrement="true" name="id" type="INT">
+                <constraints nullable="false" />
+            </column>
+            <column name="name" type="VARCHAR(45)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="password" type="VARCHAR(64)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="added_at" type="timestamp">
+                <constraints nullable="false"/>
+            </column>
+            <column name="chat_id" type="BIGINT">
+                <constraints nullable="false" primaryKey="true"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="oljab (generated)" id="1699908772435-5">
+        <createTable tableName="user_city">
+            <column autoIncrement="true" name="id" type="INT">
+                <constraints nullable="false" primaryKey="true"/>
+            </column>
+            <column name="user_id" type="INT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="city_id" type="INT">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="oljab (generated)" id="1699908772435-6">
+        <createTable tableName="user_role">
+            <column autoIncrement="true" name="id" type="INT">
+                <constraints nullable="false" primaryKey="true"/>
+            </column>
+            <column name="user_id" type="INT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="role_id" type="INT">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="oljab (generated)" id="1699908772435-7">
+        <createIndex indexName="fk2_to_user_idx" tableName="user_city">
+            <column name="user_id"/>
+        </createIndex>
+    </changeSet>
+    <changeSet author="oljab (generated)" id="1699908772435-8">
+        <createIndex indexName="fk3_to_user_idx" tableName="message">
+            <column name="chat_id"/>
+        </createIndex>
+    </changeSet>
+    <changeSet author="oljab (generated)" id="1699908772435-9">
+        <createIndex indexName="fk_to_city_idx" tableName="user_city">
+            <column name="city_id"/>
+        </createIndex>
+    </changeSet>
+    <changeSet author="oljab (generated)" id="1699908772435-10">
+        <createIndex indexName="fk_to_role_idx" tableName="user_role">
+            <column name="role_id"/>
+        </createIndex>
+    </changeSet>
+    <changeSet author="oljab (generated)" id="1699908772435-11">
+        <createIndex indexName="fk_to_user_idx" tableName="user_role">
+            <column name="user_id"/>
+        </createIndex>
+    </changeSet>
+    <changeSet author="oljab (generated)" id="1699908772435-12">
+        <createIndex indexName="idx_user_chat_id" tableName="user">
+            <column name="chat_id"/>
+        </createIndex>
+    </changeSet>
+    <changeSet author="oljab (generated)" id="1699908772435-13">
+        <addForeignKeyConstraint baseColumnNames="user_id" baseTableName="user_city" constraintName="fk2_to_user" deferrable="false" initiallyDeferred="false" onDelete="RESTRICT" onUpdate="RESTRICT" referencedColumnNames="id" referencedTableName="user" validate="true"/>
+    </changeSet>
+    <changeSet author="oljab (generated)" id="1699908772435-14">
+        <addForeignKeyConstraint baseColumnNames="chat_id" baseTableName="message" constraintName="fk3_to_user" deferrable="false" initiallyDeferred="false" onDelete="RESTRICT" onUpdate="RESTRICT" referencedColumnNames="chat_id" referencedTableName="user" validate="true"/>
+    </changeSet>
+    <changeSet author="oljab (generated)" id="1699908772435-15">
+        <addForeignKeyConstraint baseColumnNames="city_id" baseTableName="user_city" constraintName="fk_to_city" deferrable="false" initiallyDeferred="false" onDelete="RESTRICT" onUpdate="RESTRICT" referencedColumnNames="id" referencedTableName="city" validate="true"/>
+    </changeSet>
+    <changeSet author="oljab (generated)" id="1699908772435-16">
+        <addForeignKeyConstraint baseColumnNames="role_id" baseTableName="user_role" constraintName="fk_to_role" deferrable="false" initiallyDeferred="false" onDelete="RESTRICT" onUpdate="RESTRICT" referencedColumnNames="id" referencedTableName="role" validate="true"/>
+    </changeSet>
+    <changeSet author="oljab (generated)" id="1699908772435-17">
+        <addForeignKeyConstraint baseColumnNames="user_id" baseTableName="user_role" constraintName="fk_to_user" deferrable="false" initiallyDeferred="false" onDelete="RESTRICT" onUpdate="RESTRICT" referencedColumnNames="id" referencedTableName="user" validate="true"/>
+    </changeSet>
+    <changeSet author="oljab (generated)" id="1699908772435-18">
+        <insert tableName="role">
+            <column name="name" value="ROLE_USER"/>
+        </insert>
+        <insert tableName="role">
+            <column name="name" value="ROLE_ADMIN"/>
+        </insert>
+    </changeSet>
+</databaseChangeLog>
