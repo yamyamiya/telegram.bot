@@ -21,6 +21,11 @@ public class JpaCityService implements CityService {
     @Autowired
     private UserRepository userRepository;
 
+    public JpaCityService(CityRepository cityRepository, UserRepository userRepository) {
+        this.cityRepository = cityRepository;
+        this.userRepository = userRepository;
+    }
+
     @Override
     public List<City> getAll() {
         return new ArrayList<>(cityRepository.findAll());
@@ -52,7 +57,6 @@ public class JpaCityService implements CityService {
     @Override
     public City add(City city, User user) {
             if(city.getUsersForCities().contains(user)){
-
                 return city;
             }
             else{
