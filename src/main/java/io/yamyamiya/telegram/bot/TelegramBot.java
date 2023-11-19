@@ -59,6 +59,28 @@ public class TelegramBot extends TelegramLongPollingBot {
 
     private final Environment env;
 
+    public TelegramBot(
+            Locator locator,
+            WeatherForecast weatherForecast,
+            UserService userService,
+            CityService cityService,
+            MessageService messageService,
+            TaskService taskService,
+            ScheduleExecutor executor,
+            BCryptPasswordEncoder encoder,
+            Environment env) {
+        super(env.getProperty("telegram.token"));
+        this.locator = locator;
+        this.weatherForecast = weatherForecast;
+        this.userService = userService;
+        this.cityService = cityService;
+        this.messageService = messageService;
+        this.taskService = taskService;
+        this.executor = executor;
+        this.encoder = encoder;
+        this.env = env;
+    }
+
     public TelegramBot(Environment env) {
         super(env.getProperty("telegram.token"));
         this.env = env;
@@ -82,7 +104,6 @@ public class TelegramBot extends TelegramLongPollingBot {
                 return;
             }
 
-
             int cityIndex = Integer.parseInt(data);
             City city = cityService.getById(cityIndex);
             if (taskService.getSubscriptionForCity(chatId, cityIndex) == 0) {
@@ -103,12 +124,7 @@ public class TelegramBot extends TelegramLongPollingBot {
                         .build();
             }
 
-
-            try {
-                sendApiMethod(sendMessage);
-            } catch (TelegramApiException e) {
-                throw new RuntimeException(e);
-            }
+            sendMessage(sendMessage);
             return;
         }
 
@@ -118,13 +134,11 @@ public class TelegramBot extends TelegramLongPollingBot {
 
         messageService.add(new Message(0, message, user.getChatId(), user.getChatId(), null));
 
-
         Result<Location> locatorResult = locator.locate(message);
         SendMessage sendMessage;
         SendMessage subscriptionMessage = null;
         InlineKeyboardMarkup subscriptionKeybord = null;
         boolean sentSubscription = false;
-
 
         if (locatorResult instanceof Result.Success<Location>) {
 
@@ -216,11 +230,9 @@ public class TelegramBot extends TelegramLongPollingBot {
                     .chatId(user.getChatId())
                     .text(String.format("Your password is '%s'. \n", password.getRawPassword()))
                     .build();
-            try {
-                sendApiMethod(passwordAnswer);
-            } catch (TelegramApiException e) {
-                throw new RuntimeException(e);
-            }
+
+            sendMessage(passwordAnswer);
+
             return savedUser;
         } else {
             return userFoundByChatId;
