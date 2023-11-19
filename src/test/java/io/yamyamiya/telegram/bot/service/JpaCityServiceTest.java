@@ -22,14 +22,17 @@ import static org.mockito.Mockito.when;
 
 class JpaCityServiceTest {
 
-    private final UserRepository userRepository = Mockito.mock();
-    private final CityRepository cityRepository = Mockito.mock();
+    private UserRepository userRepository;
+    private CityRepository cityRepository;
 
     private JpaCityService cityService;
 
     @BeforeEach
     void init() {
+        userRepository = Mockito.mock();
+        cityRepository = Mockito.mock();
         cityService = new JpaCityService(cityRepository, userRepository);
+
     }
 
     @Test
