@@ -4,6 +4,7 @@ import io.yamyamiya.telegram.bot.dto.Location;
 import io.yamyamiya.telegram.bot.entity.City;
 import io.yamyamiya.telegram.bot.entity.User;
 
+import java.util.Collection;
 import java.util.List;
 
 public interface CityService {
@@ -11,7 +12,7 @@ public interface CityService {
 
     City getById(int id);
 
-//    City add(Location location, User user);
+    Collection<City> getAllCitiesForThisUserByChatId(long chatId);
 
     City add(Location location);
 

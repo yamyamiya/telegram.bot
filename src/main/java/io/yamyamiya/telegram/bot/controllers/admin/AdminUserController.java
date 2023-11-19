@@ -1,4 +1,4 @@
-package io.yamyamiya.telegram.bot.controllers;
+package io.yamyamiya.telegram.bot.controllers.admin;
 
 import io.yamyamiya.telegram.bot.entity.User;
 import io.yamyamiya.telegram.bot.exception.exceptions.EntityValidationException;
@@ -10,8 +10,8 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/user")
-public class UserController {
+@RequestMapping("/admin/user")
+public class AdminUserController {
     @Autowired
     private UserService service;
 

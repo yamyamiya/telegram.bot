@@ -7,7 +7,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
@@ -15,10 +14,6 @@ import java.util.*;
 public class JpaUserService implements UserService, UserDetailsService {
     @Autowired
     private UserRepository userRepository;
-
-    @Autowired
-    private BCryptPasswordEncoder encoder;
-
 
     @Override
     public List<User> getAll() {
@@ -44,8 +39,7 @@ public class JpaUserService implements UserService, UserDetailsService {
         roles.add(new Role(1, "ROLE_USER"));
         newUser.setRoles(roles);
 
-        String encodedPassword= encoder.encode(user.getPassword());
-        newUser.setPassword(encodedPassword);
+        newUser.setPassword(user.getPassword());
         newUser.setChatId(user.getChatId());
         newUser.setAddedAt(user.getAddedAt());
 
@@ -76,7 +70,7 @@ public class JpaUserService implements UserService, UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        User user =userRepository.findByName(username);
+        User user =userRepository.findByChatId(Long.parseLong(username));
         if(user==null){
             throw new UsernameNotFoundException("User not found");
         }

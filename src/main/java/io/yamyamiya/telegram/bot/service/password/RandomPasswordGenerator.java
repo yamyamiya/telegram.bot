@@ -7,12 +7,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class RandomPasswordGenerator {
-    public static void main(String[] args) {
-        RandomPasswordGenerator passwordGenerator = new RandomPasswordGenerator();
-        System.out.println(passwordGenerator.generatePassword());
+    private final BCryptPasswordEncoder encoder;
+
+    public RandomPasswordGenerator(BCryptPasswordEncoder encoder) {
+        this.encoder = encoder;
     }
+
     public Password generatePassword() {
-        BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
         PasswordGenerator passwordGenerator = new PasswordGenerator();
         List<CharacterRule> list = new ArrayList<>();
         list.add(new CharacterRule(EnglishCharacterData.UpperCase, 1));

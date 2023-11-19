@@ -1,4 +1,4 @@
-package io.yamyamiya.telegram.bot.controllers;
+package io.yamyamiya.telegram.bot.controllers.admin;
 
 import io.yamyamiya.telegram.bot.entity.Message;
 import io.yamyamiya.telegram.bot.exception.exceptions.EntityValidationException;
@@ -12,11 +12,15 @@ import java.util.Date;
 import java.util.List;
 
 @RestController
-@RequestMapping("/message")
-public class MessageController {
+@RequestMapping("/admin/message")
+public class AdminMessageController {
     @Autowired
     private MessageService messageService;
 
+    /**
+     * admin gets all messages
+     * @return
+     */
     @GetMapping
     public List<Message> getAll() {
         return messageService.getAll();
@@ -66,11 +70,6 @@ public class MessageController {
     public int getCountByDateBefore(@PathVariable @DateTimeFormat(pattern = "yyyy-MM-dd") Date date) {
         return messageService.getCountByDateBefore(date);
     }
-
-//    @GetMapping("/count/date/{date}")
-//    public int getCountByDate(@PathVariable @DateTimeFormat(pattern = "yyyy-MM-dd") Date date) {
-//        return messageService.getCountByDate(date);
-//    }
 
     @GetMapping("/count/between/{date1}/{date2}")
     public int getCountByDateBetween(@PathVariable @DateTimeFormat(pattern = "yyyy-MM-dd") Date date1, @PathVariable @DateTimeFormat(pattern = "yyyy-MM-dd") Date date2) {

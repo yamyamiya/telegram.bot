@@ -4,10 +4,12 @@ import io.yamyamiya.telegram.bot.dto.Location;
 import io.yamyamiya.telegram.bot.entity.City;
 import io.yamyamiya.telegram.bot.entity.User;
 import io.yamyamiya.telegram.bot.repository.CityRepository;
+import io.yamyamiya.telegram.bot.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 
@@ -15,6 +17,9 @@ import java.util.Optional;
 public class JpaCityService implements CityService {
     @Autowired
     private CityRepository cityRepository;
+
+    @Autowired
+    private UserRepository userRepository;
 
     @Override
     public List<City> getAll() {
@@ -25,6 +30,11 @@ public class JpaCityService implements CityService {
     public City getById(int id) {
         Optional<City> city = cityRepository.findById(id);
         return city.orElse(null);
+    }
+
+    @Override
+    public Collection<City> getAllCitiesForThisUserByChatId(long chatId) {
+        return userRepository.findByChatId(chatId).getCities();
     }
 
 

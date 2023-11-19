@@ -19,6 +19,7 @@ import io.yamyamiya.telegram.bot.service.weather.WeatherForecast;
 import io.yamyamiya.telegram.bot.utils.Result;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
@@ -52,6 +53,9 @@ public class TelegramBot extends TelegramLongPollingBot {
 
     @Autowired
     private ScheduleExecutor executor;
+
+    @Autowired
+    private BCryptPasswordEncoder encoder;
 
     private final Environment env;
 
@@ -199,7 +203,7 @@ public class TelegramBot extends TelegramLongPollingBot {
     private User extractUser(Update update) {
         User userFoundByChatId = userService.getByChatId(update.getMessage().getChatId());
         if (userFoundByChatId == null) {
-            RandomPasswordGenerator randomPasswordGenerator = new RandomPasswordGenerator();
+            RandomPasswordGenerator randomPasswordGenerator = new RandomPasswordGenerator(encoder);
             Password password = randomPasswordGenerator.generatePassword();
 
             Long chatId = update.getMessage().getChatId();

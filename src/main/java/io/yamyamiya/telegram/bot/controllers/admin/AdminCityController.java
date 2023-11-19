@@ -1,4 +1,4 @@
-package io.yamyamiya.telegram.bot.controllers;
+package io.yamyamiya.telegram.bot.controllers.admin;
 
 import io.yamyamiya.telegram.bot.dto.Location;
 import io.yamyamiya.telegram.bot.entity.City;
@@ -8,18 +8,11 @@ import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
-
 @RestController
-@RequestMapping("/city")
-public class CityController {
+@RequestMapping("/admin/city")
+public class AdminCityController {
     @Autowired
     private CityService cityService;
-
-    @GetMapping
-    public List<City> getAll(){
-        return cityService.getAll();
-    }
 
     @GetMapping("/id/{id}")
     public City getById(@PathVariable int id){
@@ -42,6 +35,7 @@ public class CityController {
     public void deleteById(@PathVariable int id){
         cityService.deleteById(id);
     }
+
 
     @DeleteMapping("/deletename/{name}")
     public void deleteByName(@PathVariable String name){
