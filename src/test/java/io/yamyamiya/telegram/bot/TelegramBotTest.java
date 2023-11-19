@@ -158,4 +158,28 @@ class TelegramBotTest {
         assertEquals("You have already successfully subscribed for Tokyo. \n", sentMessageArgumentCaptor.getValue().getText());
     }
 
+    @Test
+    void shouldHandleUnsubscribeCommand() {
+        CallbackQuery query = mock();
+        InlineKeyboardMarkup markup = mock();
+        InlineKeyboardButton keyboard = mock();
+        when(query.getData()).thenReturn("123"); // Task id
+        when(query.getMessage()).thenReturn(telegramMessage);
+        when(markup.getKeyboard()).thenReturn(List.of(List.of(keyboard)));
+        when(keyboard.getText()).thenReturn("Unsubscribe?");
+        when(telegramMessage.getChatId()).thenReturn(1L);
+        when(telegramMessage.getReplyMarkup()).thenReturn(markup);
+        when(telegramUpdate.getCallbackQuery()).thenReturn(query);
+        when(telegramUpdate.getMessage()).thenReturn(telegramMessage);
+        when(telegramUpdate.hasCallbackQuery()).thenReturn(true);
+
+        telegramBot.onUpdateReceived(telegramUpdate);
+
+        verify(taskService).deleteById(123);
+
+        ArgumentCaptor<SendMessage> sentMessageArgumentCaptor = ArgumentCaptor.forClass(SendMessage.class);
+        verify(telegramBot).sendMessage(sentMessageArgumentCaptor.capture());
+        assertEquals("You have successfully unsubscribed. \n", sentMessageArgumentCaptor.getValue().getText());
+    }
+
 }
