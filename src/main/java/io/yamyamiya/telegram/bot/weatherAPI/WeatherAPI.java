@@ -12,10 +12,12 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.client.RestTemplate;
 
 import java.util.Locale;
-
+/**
+ * Class WeatherAPI using restTemplate and environment parameters,
+ * implements methods of interface {@link WeatherForecast},
+ * provides information about forecast from received location using any Forecast service
+ */
 public class WeatherAPI implements WeatherForecast {
-
-
 
     private final RestTemplate restTemplate;
     private final Environment environment;
@@ -25,6 +27,11 @@ public class WeatherAPI implements WeatherForecast {
         this.environment = environment;
     }
 
+    /**
+     * provides forecast from given location by using weatherbit API
+     * @param location - location of the city
+     * @return Result<Forecast>(Success or Failure)
+     */
     @Override
     public Result<Forecast> forecast(Location location) {
         String apiKey = environment.getProperty("weather.api_key");
@@ -43,6 +50,12 @@ public class WeatherAPI implements WeatherForecast {
         return new Result.Failure<>();
     }
 
+    /**
+     * provides forecast for given city by using weatherbit API
+     * implementation uses forecast(location) method
+     * @param city - the city for forecast
+     * @return Result<Forecast>(Success or Failure)
+     */
     @Override
     public Result<Forecast> forecast(City city) {
         Location location = new Location(city.getLatitude(), city.getLongitude(), city.getName());

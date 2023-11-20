@@ -26,6 +26,11 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ScheduledFuture;
 
+/**
+ * ScheduleExecutor class responsible for Task execution.
+ * It schedules task to be executed every day, before task execution it verifies if task still exists in DB
+ * and should be executed, if not it cancels scheduler.
+ */
 @Component
 @EnableScheduling
 public class ScheduleExecutor {
@@ -38,11 +43,19 @@ public class ScheduleExecutor {
 
     @Autowired
     private WeatherForecast weatherForecast;
-
+    /**
+     * This is map which contains currently scheduled tasks. We need it to cancel the task,
+     * if corresponded entity has been deleted from the DB
+     */
     private Map<String, ScheduledFuture<?>> futures = new HashMap<>();
 
     private static Logger logger = LoggerFactory.getLogger(ScheduleExecutor.class);
 
+    /**
+     * method that schedules task to be executed at 9:00 every day
+     * @param task to be executed
+     * @param bot instance of telegramBot
+     */
     public void taskSchedulerTaskWithTrigger(ScheduledForecastTask task, TelegramBot bot) {
         TaskScheduler scheduler = new DefaultManagedTaskScheduler();
         String scheduledFutureKey = String.format("%d %d", task.getChatId(), task.getCityId());
@@ -76,14 +89,14 @@ public class ScheduleExecutor {
                                     .chatId(task.getChatId())
                                     .parseMode("HTML")
                                     .replyMarkup(unSubscriptionKeybord)
-                                    .text(String.format("On %s temperature in %s is %.2f °C. %s. \n", forecast.getDate(), city.getName(), forecast.getTemperature().getValue(), forecast.getDescription()))
+                                    .text(String.format("Now the temperature in %s is %.2f °C. %s. \n", city.getName(), forecast.getTemperature().getValue(), forecast.getDescription()))
                                     .build();
 
                             bot.sendMessage(sendMessage);
                         }
                     }
                 },
-                new CronTrigger("0 0 12 * * *"));
+                new CronTrigger("0 0 9 * * *"));
         futures.put(scheduledFutureKey, scheduledFuture);
     }
 

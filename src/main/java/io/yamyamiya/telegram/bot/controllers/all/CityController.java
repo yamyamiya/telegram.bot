@@ -8,7 +8,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
-
+/**
+ * Entry point for common functionality related to city. Uses method described in {@link CityService}
+ */
 @RestController
 @RequestMapping("/city")
 public class CityController {

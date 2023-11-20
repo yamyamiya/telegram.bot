@@ -4,11 +4,15 @@ import io.yamyamiya.telegram.bot.entity.User;
 import io.yamyamiya.telegram.bot.exception.exceptions.EntityValidationException;
 import io.yamyamiya.telegram.bot.service.UserService;
 import jakarta.validation.Valid;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-
+/**
+ * Entry point for admin functionality related to users. Uses methods described in {@link UserService}
+ */
+@Slf4j
 @RestController
 @RequestMapping("/admin/user")
 public class AdminUserController {
@@ -31,7 +35,8 @@ public class AdminUserController {
             service.add(newUser);
             return newUser;
         } catch (Exception e) {
-            throw new EntityValidationException(e.getMessage());
+            log.error(String.format("Could not save user %s", newUser.toString()), new EntityValidationException(e.getMessage()));
+            return null;
         }
     }
 

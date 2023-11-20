@@ -98,7 +98,7 @@ class TelegramBotTest {
 
         ArgumentCaptor<SendMessage> sentMessageArgumentCaptor = ArgumentCaptor.forClass(SendMessage.class);
         verify(telegramBot).sendMessage(sentMessageArgumentCaptor.capture());
-        assertTrue(sentMessageArgumentCaptor.getValue().getText().startsWith("Your password is "));
+        assertTrue(sentMessageArgumentCaptor.getValue().getText().startsWith("Welcome to yamyamia telegram bot!"));
     }
 
     @Test
@@ -215,7 +215,7 @@ class TelegramBotTest {
 
         ArgumentCaptor<SendMessage> sentMessageArgumentCaptor = ArgumentCaptor.forClass(SendMessage.class);
         verify(telegramBot).sendMessage(sentMessageArgumentCaptor.capture());
-        assertEquals(String.format("On %s temperature in %s is %.2f °C. %s. \n", forecast.getDate(), location.getCity(), forecast.getTemperature().getValue(), forecast.getDescription()), sentMessageArgumentCaptor.getValue().getText());
+        assertEquals(String.format("Now the temperature in %s is %.2f °C. %s. \n", location.getCity(), forecast.getTemperature().getValue(), forecast.getDescription()), sentMessageArgumentCaptor.getValue().getText());
     }
 
     @Test

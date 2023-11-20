@@ -6,6 +6,9 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Class for encoding of raw password
+ */
 public class RandomPasswordGenerator {
     private final BCryptPasswordEncoder encoder;
 
@@ -13,6 +16,10 @@ public class RandomPasswordGenerator {
         this.encoder = encoder;
     }
 
+    /**
+     * encodes password with certain rules
+     * @return Password
+     */
     public Password generatePassword() {
         PasswordGenerator passwordGenerator = new PasswordGenerator();
         List<CharacterRule> list = new ArrayList<>();

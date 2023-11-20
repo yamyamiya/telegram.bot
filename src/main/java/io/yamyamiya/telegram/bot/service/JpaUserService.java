@@ -10,6 +10,11 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
+
+/**
+ * JpaUserService class implements methods of {@link UserService}
+ * contains userRepository {@link UserRepository}
+ */
 @Service
 public class JpaUserService implements UserService, UserDetailsService {
     @Autowired

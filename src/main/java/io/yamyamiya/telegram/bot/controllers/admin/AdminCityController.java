@@ -5,9 +5,14 @@ import io.yamyamiya.telegram.bot.entity.City;
 import io.yamyamiya.telegram.bot.exception.exceptions.EntityValidationException;
 import io.yamyamiya.telegram.bot.service.CityService;
 import jakarta.validation.Valid;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+/**
+ * Entry point for admin functionality related to city. Uses methods described in {@link CityService}
+ */
+@Slf4j
 @RestController
 @RequestMapping("/admin/city")
 public class AdminCityController {
@@ -25,7 +30,8 @@ public class AdminCityController {
             cityService.add(location);
             return true;
         } catch (Exception e) {
-            throw new EntityValidationException(e.getMessage());
+            log.error(String.format("Could not save city with location %s", location), new EntityValidationException(e.getMessage()));
+            return false;
         }
     }
 

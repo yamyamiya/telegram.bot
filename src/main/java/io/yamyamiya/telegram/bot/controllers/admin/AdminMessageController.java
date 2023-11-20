@@ -4,23 +4,23 @@ import io.yamyamiya.telegram.bot.entity.Message;
 import io.yamyamiya.telegram.bot.exception.exceptions.EntityValidationException;
 import io.yamyamiya.telegram.bot.service.MessageService;
 import jakarta.validation.Valid;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Date;
 import java.util.List;
-
+/**
+ * Entry point for admin functionality related to messages. Uses methods described in {@link MessageService}
+ */
+@Slf4j
 @RestController
 @RequestMapping("/admin/message")
 public class AdminMessageController {
     @Autowired
     private MessageService messageService;
 
-    /**
-     * admin gets all messages
-     * @return
-     */
     @GetMapping
     public List<Message> getAll() {
         return messageService.getAll();
@@ -37,7 +37,8 @@ public class AdminMessageController {
             messageService.add(message);
             return message;
         } catch (Exception e) {
-            throw new EntityValidationException(e.getMessage());
+            log.error(String.format("Could not save message with content %s", message.getContent()), new EntityValidationException(e.getMessage()));
+            return null;
         }
     }
 

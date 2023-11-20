@@ -10,9 +10,16 @@ import com.theokanning.openai.service.OpenAiService;
 import io.yamyamiya.telegram.bot.dto.Location;
 import io.yamyamiya.telegram.bot.service.location.Locator;
 import io.yamyamiya.telegram.bot.utils.Result;
+import lombok.extern.slf4j.Slf4j;
 
 import java.util.List;
 
+/**
+ * Class OpenAILocator using OpenAiService and objectMapper parameters,
+ * implements methods of interface {@link Locator},
+ * provides information about location from received data using OpenAI
+ */
+@Slf4j
 public class OpenAILocator implements Locator {
 
     private final OpenAiService service;
@@ -22,6 +29,11 @@ public class OpenAILocator implements Locator {
         this.service = service;
     }
 
+    /**
+     * identifies location from provided string by using OpenAI API
+     * @param message the data containing city mentioning
+     * @return Result<Location>(Success or Failure)
+     */
     @Override
     public Result<Location> locate(String message) {
         ChatCompletionRequest completionRequest = ChatCompletionRequest
@@ -42,10 +54,12 @@ public class OpenAILocator implements Locator {
                     Location location = objectMapper.readValue(locationJSON, Location.class);
                     return new Result.Success<>(location);
                 } catch (JsonProcessingException e) {
+                    log.info(String.format("Could not parse JSON: %s", locationJSON));
                     return new Result.Failure<>(e);
                 }
             }
         } catch (RuntimeException e) {
+            log.info("OpenAI error.", e);
             return new Result.Failure<>(e);
 
         }

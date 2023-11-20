@@ -7,27 +7,47 @@ import jakarta.validation.constraints.NotNull;
 import java.util.HashSet;
 import java.util.Set;
 
+/**
+ * class City represent the City entity, which is an element in {@link io.yamyamiya.telegram.bot.repository.CityRepository}
+ * contains id, name, latitude, longitude parameters.
+ * Objects of this class with corresponding properties represent table "city" in DB,
+ * linked with table "user_city" (using Foreign key city_id),
+ */
 @Entity
 @Table(name="city")
 public class City {
+    /**
+     * id of the city
+     */
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name="id")
     private int id;
 
+    /**
+     * name of the city
+     */
     @Column(name="name")
     @NotNull
     private String name;
 
-
+    /**
+     * latitude of the city
+     */
     @Column(name="latitude")
     @NotNull
     private double latitude;
 
+    /**
+     * longitude of the city
+     */
     @Column(name="longitude")
     @NotNull
     private double longitude;
 
+    /**
+     * users {@link User}) having link to the city are contained in this param
+     */
     @JsonIgnore
     @ManyToMany(fetch = FetchType.EAGER,
             cascade = CascadeType.MERGE)

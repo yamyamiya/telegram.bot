@@ -1,4 +1,7 @@
 package io.yamyamiya.telegram.bot.service.password;
+/**
+ * Structure that holds raw and encrypted password
+ */
 
 public class Password {
     private final String rawPassword;

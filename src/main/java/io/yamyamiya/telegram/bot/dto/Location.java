@@ -1,8 +1,22 @@
 package io.yamyamiya.telegram.bot.dto;
 
+/**
+ * DTO for Location, contains required parameters for correct receiving of the forecast
+ * parameter of method forecast() {@link io.yamyamiya.telegram.bot.service.weather.WeatherForecast}
+ * result of execution of locate() metod {@link io.yamyamiya.telegram.bot.service.location.Locator}
+ */
 public class Location {
+    /**
+     * latitude of the city
+     */
     private double latitude;
+    /**
+     * longitude of the city
+     */
     private double longitude;
+    /**
+     * name of the city
+     */
     private String city;
 
     public Location(double latitude, double longitude, String city) {

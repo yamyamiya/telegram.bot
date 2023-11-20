@@ -17,6 +17,7 @@ import io.yamyamiya.telegram.bot.service.password.Password;
 import io.yamyamiya.telegram.bot.service.password.RandomPasswordGenerator;
 import io.yamyamiya.telegram.bot.service.weather.WeatherForecast;
 import io.yamyamiya.telegram.bot.utils.Result;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -31,6 +32,12 @@ import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Implementation of Logic of TelegramBot, methods of TelegramLongPollingBot.
+ * Implements handling of the user's messages and responds on them.
+ * currently supports request for weather forecast, subscription and unsubscription.
+ */
+@Slf4j
 @Component
 public class TelegramBot extends TelegramLongPollingBot {
     @Autowired
@@ -81,10 +88,6 @@ public class TelegramBot extends TelegramLongPollingBot {
         this.env = env;
     }
 
-    public TelegramBot(Environment env) {
-        super(env.getProperty("telegram.token"));
-        this.env = env;
-    }
 
     @Override
     public void onUpdateReceived(Update update) {
@@ -175,7 +178,7 @@ public class TelegramBot extends TelegramLongPollingBot {
                         .chatId(user.getChatId())
                         .parseMode("HTML")
                         .replyMarkup(subscriptionKeybord)
-                        .text(String.format("On %s temperature in %s is %.2f °C. %s. \n", forecast.getDate(), location.getCity(), forecast.getTemperature().getValue(), forecast.getDescription()))
+                        .text(String.format("Now the temperature in %s is %.2f °C. %s. \n", location.getCity(), forecast.getTemperature().getValue(), forecast.getDescription()))
                         .build();
 
             } else {
@@ -206,7 +209,7 @@ public class TelegramBot extends TelegramLongPollingBot {
         try {
             sendApiMethod(sendMessage);
         } catch (TelegramApiException e) {
-            throw new RuntimeException(e);
+            log.error("Could not send message to Telegram", e);
         }
     }
 
@@ -224,7 +227,7 @@ public class TelegramBot extends TelegramLongPollingBot {
 
             SendMessage passwordAnswer = SendMessage.builder()
                     .chatId(user.getChatId())
-                    .text(String.format("Your password is '%s'. \n", password.getRawPassword()))
+                    .text(String.format("Welcome to yamyamia telegram bot! \n Your password is '%s'. \n", password.getRawPassword()))
                     .build();
 
             sendMessage(passwordAnswer);

@@ -13,6 +13,10 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 
+/**
+ * JpaCityService class implements methods of {@link CityService}
+ * contains cityRepository {@link CityRepository} and userRepository {@link UserRepository} parameters
+ */
 @Service
 public class JpaCityService implements CityService {
     @Autowired

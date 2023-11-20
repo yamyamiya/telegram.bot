@@ -11,39 +11,53 @@ import java.util.Collection;
 import java.util.Date;
 import java.util.Objects;
 import java.util.Set;
-
+/**
+ * class User represent the User entity, which is an element in {@link io.yamyamiya.telegram.bot.repository.UserRepository}
+ * contains id, name, password, chatId, addedAt, roles and cities parameters.
+ * Objects of this class with corresponding properties represent table "user" in DB,
+ * linked with table "user_city" (using Foreign key user_id) and with table "user_role" (using Foreign key user_id).
+ * Implements methods of UserDetails interface (for implementing Security)
+ */
 @Entity
 @Table(name = "user", indexes = @Index(columnList = "id,chat_id"))
 public class User implements UserDetails {
+    /**
+     * id of the user
+     */
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private int id;
-
+    /**
+     * name of the user
+     */
     @Column(name = "name")
     @NotNull
     @NotBlank
     private String name;
-
+    /**
+     * password of the user {@link io.yamyamiya.telegram.bot.service.password.RandomPasswordGenerator}
+     * @see io.yamyamiya.telegram.bot.TelegramBot
+     */
     @Column(name = "password")
     @NotBlank
     private String password;
-
+    /**
+     * chatId of user (provided by TelegramBot)
+     */
     @Column(name = "chat_id")
     @NotBlank
     private long chatId;
-
+    /**
+     * time of creation of user in TelegramBot
+     */
     @Column(name = "added_at")
     @NotBlank
     private Date addedAt;
 
-    public Date getAddedAt() {
-        return addedAt;
-    }
-
-    public void setAddedAt(Date addedAt) {
-        this.addedAt = addedAt;
-    }
+    /**
+     * set of roles of user {@link Role} (ROLE_USER, ROLE_ADMIN)
+     */
 
     @JsonIgnore
     @ManyToMany(fetch = FetchType.EAGER)
@@ -54,6 +68,9 @@ public class User implements UserDetails {
     )
     private Set<Role> roles;
 
+    /**
+     * set of cities of user, contains cities, that were requested by user
+     */
     @JsonIgnore
     @ManyToMany(fetch = FetchType.EAGER,
             cascade = CascadeType.ALL)
@@ -85,6 +102,14 @@ public class User implements UserDetails {
     public User(int id, String name) {
         this.id = id;
         this.name = name;
+    }
+
+    public Date getAddedAt() {
+        return addedAt;
+    }
+
+    public void setAddedAt(Date addedAt) {
+        this.addedAt = addedAt;
     }
 
     public long getChatId() {
@@ -177,5 +202,18 @@ public class User implements UserDetails {
     @Override
     public int hashCode() {
         return Objects.hash(chatId);
+    }
+
+    @Override
+    public String toString() {
+        return "User{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", password='" + password + '\'' +
+                ", chatId=" + chatId +
+                ", addedAt=" + addedAt +
+                ", roles=" + roles +
+                ", cities=" + cities +
+                '}';
     }
 }

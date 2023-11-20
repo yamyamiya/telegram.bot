@@ -2,8 +2,6 @@ package io.yamyamiya.telegram.bot.configuration;
 
 import com.theokanning.openai.service.OpenAiService;
 import io.yamyamiya.telegram.bot.openAI.OpenAILocator;
-import io.yamyamiya.telegram.bot.service.JpaUserService;
-import io.yamyamiya.telegram.bot.service.UserService;
 import io.yamyamiya.telegram.bot.service.location.Locator;
 import io.yamyamiya.telegram.bot.service.weather.WeatherForecast;
 import io.yamyamiya.telegram.bot.weatherAPI.WeatherAPI;
@@ -15,6 +13,9 @@ import org.springframework.web.client.RestTemplate;
 
 import java.util.Objects;
 
+/**
+ * Configuration for telegramBot with beans creation rules
+ */
 @Configuration
 public class BotConfiguration {
     @Bean

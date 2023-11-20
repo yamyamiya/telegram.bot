@@ -8,7 +8,10 @@ import org.springframework.stereotype.Service;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
-
+/**
+ * JpaCityService class implements methods of {@link MessageService}
+ * contains messageRepository {@link MessageRepository}
+ */
 @Service
 public class JpaMessageService implements MessageService {
     @Autowired
@@ -60,11 +63,6 @@ public class JpaMessageService implements MessageService {
     public int getCountByDateBefore(Date date) {
         return messageRepository.getCountByDateBefore(date);
     }
-
-//    @Override
-//    public int getCountByDate(Date date) {
-//        return messageRepository.getCountByDate(date);
-//    }
 
     @Override
     public int getCountByDateBetween(Date date1, Date date2) {

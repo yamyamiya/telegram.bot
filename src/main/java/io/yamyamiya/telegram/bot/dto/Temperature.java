@@ -1,5 +1,8 @@
 package io.yamyamiya.telegram.bot.dto;
 
+/**
+ * DTO for Temperature with value in CELSIUS
+ */
 public class Temperature {
     private double value;
     private Grad grad;

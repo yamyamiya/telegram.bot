@@ -6,20 +6,32 @@ import jakarta.validation.constraints.NotNull;
 import org.springframework.security.core.GrantedAuthority;
 
 import java.util.Set;
-
+/**
+ * class Role represent the Role entity, which is an element in {@link io.yamyamiya.telegram.bot.repository.RoleRepository}
+ * contains id, name, users parameters.
+ * Objects of this class with corresponding properties represent table "role" in DB,
+ * linked with table "user_role" (using Foreign key role_id).
+ * Implements methods of GrantedAuthority interface (for implementing Security)
+ */
 @Entity
 @Table(name="role")
 public class Role implements GrantedAuthority {
-
+    /**
+     * id of the role
+     */
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name="id")
     private int id;
-
+    /**
+     * role's name (ROLE_USER, ROLE_ADMIN), ROLE_USER is added by default
+     */
     @Column(name="name")
     @NotNull
     private String name;
-
+    /**
+     * set of users having the role
+     */
     @JsonIgnore
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(

@@ -1,11 +1,23 @@
 package io.yamyamiya.telegram.bot.dto;
 
+/**
+ * DTO for Forecast
+ * result of execution WeatherForecast.locate() method
+ * {@link io.yamyamiya.telegram.bot.service.weather.WeatherForecast}
+ */
 public class Forecast {
+    /**
+     * time of the provided forecast
+     */
 private final String date;
-
-private final Temperature temperature;
-
-private final String description;
+    /**
+     * provided temperature
+     */
+    private final Temperature temperature;
+    /**
+     * forecast description. Example:"Sunny, no clouds."
+     */
+    private final String description;
 
     public Forecast(String date, Temperature temperature, String description) {
         this.date = date;
