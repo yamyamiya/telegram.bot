@@ -1,7 +1,7 @@
 # Курсовой проект Telegram Bot 
 Автор: Ямщикова Ольга
 
-Документация: [yamyamiya.github.io](https://yamyamiya.github.io) 
+Документация: [https://yamyamiya.github.io/telegram.bot/](https://yamyamiya.github.io/telegram.bot/) 
 
 Тема проекта: приложение телеграмм бот по предоставлению прогноза погоды.
 ## Возможности
