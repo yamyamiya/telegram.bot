@@ -12,13 +12,13 @@ public interface WeatherForecast {
     /**
      * method for providing forecast from the received location
      * @param location - location of the city
-     * @return Result<Forecast> (Success or Failure)
+     * @return {@link Result<Forecast>} (Success or Failure)
      */
     Result<Forecast> forecast(Location location);
     /**
      * method for providing forecast from the received city
      * @param city - the city for forecast
-     * @return Result<Forecast> (Success or Failure)
+     * @return {@link Result<Forecast>} (Success or Failure)
      */
     Result<Forecast> forecast(City city);
 

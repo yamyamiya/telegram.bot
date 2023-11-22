@@ -7,7 +7,7 @@ import org.springframework.data.jpa.repository.Query;
 import java.util.Date;
 import java.util.List;
 /**
- * MessageRepository interface extends JpaRepository<Message, Integer>.
+ * MessageRepository interface extends {@link JpaRepository<Message, Integer>}.
  * contains objects of {@link Message class}
  * linked with table "message" in DB
  */

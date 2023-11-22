@@ -12,7 +12,7 @@ import java.util.List;
 public interface MessageService {
     /**
      * method for receiving all messages provided by MessageRepo
-     * @return List<Message>
+     * @return {@link List<Message>}
      */
     List<Message> getAll();
 

@@ -32,7 +32,7 @@ public class OpenAILocator implements Locator {
     /**
      * identifies location from provided string by using OpenAI API
      * @param message the data containing city mentioning
-     * @return Result<Location>(Success or Failure)
+     * @return {@link Result<Location>}(Success or Failure)
      */
     @Override
     public Result<Location> locate(String message) {
@@ -40,7 +40,7 @@ public class OpenAILocator implements Locator {
                 .builder()
                 .model("gpt-3.5-turbo")
                 .messages(List.of(
-                        new ChatMessage(ChatMessageRole.ASSISTANT.value(), "Act like a REST API endpoint. When you receive user input try to identify city mentioned in the message and respond in JSON format with city name, latitude and longitude. The latitude must lie in the range [-90d,90d]."),
+                        new ChatMessage(ChatMessageRole.ASSISTANT.value(), "Act like a REST API endpoint. When you receive user input try to identify city mentioned in the message and respond in JSON format with city name, latitude and longitude."),
                         new ChatMessage(ChatMessageRole.USER.value(), message))
                 )
                 .build();

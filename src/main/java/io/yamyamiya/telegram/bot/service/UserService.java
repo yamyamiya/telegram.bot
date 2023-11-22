@@ -10,7 +10,7 @@ import java.util.List;
 public interface UserService {
     /**
      * method for receiving all users provided by UserRepo
-     * @return List<User>
+     * @return {@link List<User>}
      */
     List<User> getAll();
 

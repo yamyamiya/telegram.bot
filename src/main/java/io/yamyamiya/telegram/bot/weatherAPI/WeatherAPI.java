@@ -30,7 +30,7 @@ public class WeatherAPI implements WeatherForecast {
     /**
      * provides forecast from given location by using weatherbit API
      * @param location - location of the city
-     * @return Result<Forecast>(Success or Failure)
+     * @return {@link Result<Forecast>}(Success or Failure)
      */
     @Override
     public Result<Forecast> forecast(Location location) {
@@ -54,7 +54,7 @@ public class WeatherAPI implements WeatherForecast {
      * provides forecast for given city by using weatherbit API
      * implementation uses forecast(location) method
      * @param city - the city for forecast
-     * @return Result<Forecast>(Success or Failure)
+     * @return {@link Result<Forecast>}(Success or Failure)
      */
     @Override
     public Result<Forecast> forecast(City city) {

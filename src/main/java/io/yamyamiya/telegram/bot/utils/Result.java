@@ -5,6 +5,7 @@ import jakarta.validation.constraints.NotNull;
 /**
  * Common interface that represents result of an operation.
  * It consists of Success and Failure.
+ * @param <T>  type of expected successful result value.
  */
 public interface Result<T> {
     /**
@@ -24,7 +25,7 @@ public interface Result<T> {
 
     /**
      * represents unsuccessful result and optionally holds exception
-     * @param <T> Failure doesn't have any data, but has to have the same <T> as Success for compatibility.
+     * @param <T> Failure doesn't have any data, but has to have the same T as Success for compatibility.
      */
 
     class Failure<T> implements Result<T> {

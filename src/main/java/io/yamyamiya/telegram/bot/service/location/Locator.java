@@ -11,7 +11,7 @@ public interface Locator {
     /**
      *  method for providing location from the received string
      * @param string the data containing city mentioning
-     * @return Result<Location> (Success or Failure)
+     * @return {@link Result<Location>} (Success or Failure)
      */
     Result<Location> locate(String string);
 }

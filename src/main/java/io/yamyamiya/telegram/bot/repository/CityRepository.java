@@ -6,7 +6,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
 /**
- * CityRepository interface extends JpaRepository<City, Integer>.
+ * CityRepository interface extends {@link JpaRepository<City, Integer>}.
  * contains objects of {@link City class}
  * linked with table "city" in DB
  */

@@ -4,7 +4,7 @@ import io.yamyamiya.telegram.bot.entity.ScheduledForecastTask;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 /**
- * TaskRepository interface extends JpaRepository<ScheduledForecastTask, Integer>.
+ * TaskRepository interface extends {@link JpaRepository<ScheduledForecastTask, Integer>}.
  * contains objects of {@link ScheduledForecastTask class}
  * linked with table "task" in DB
  */

@@ -4,7 +4,7 @@ import io.yamyamiya.telegram.bot.entity.User;
 import jakarta.transaction.Transactional;
 import org.springframework.data.jpa.repository.JpaRepository;
 /**
- * UserRepository interface extends JpaRepository<User, Integer>.
+ * UserRepository interface extends {@link JpaRepository<User, Integer>}.
  * contains objects of {@link User class}
  * linked with table "user" in DB
  */

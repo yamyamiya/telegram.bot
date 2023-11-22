@@ -13,7 +13,7 @@ import java.util.List;
 public interface CityService {
     /**
      * method for receiving all cities provided by CityRepo
-     * @return List<City>
+     * @return {@link List<City>}
      */
     List<City> getAll();
 
@@ -27,13 +27,13 @@ public interface CityService {
     /**
      * method for receiving all cities for certain user by his ChatId
      * @param chatId of user
-     * @return Collection<City>
+     * @return {@link Collection<City>}
      */
     Collection<City> getAllCitiesForThisUserByChatId(long chatId);
 
     /**
      * method for addition of City by its location
-     * @param location
+     * @param location of the city
      * @return City
      */
     City add(Location location);
