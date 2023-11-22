@@ -20,6 +20,12 @@ public class UserCityController {
     @Autowired
     private CityService cityService;
 
+    /**
+     * method provides the list of cities for current user, for that we need a user
+     * that is currently authenticated.
+     * @param authentication the object containing details for this specific session, provided by SpringBoot
+     * @return list of cities
+     */
     @GetMapping("/all")
     public Collection<City> getAllCitiesForThisUserByChatId(Authentication authentication){
         long chatId = ((User) authentication.getPrincipal()).getChatId();
