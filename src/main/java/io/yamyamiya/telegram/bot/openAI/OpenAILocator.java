@@ -40,7 +40,7 @@ public class OpenAILocator implements Locator {
                 .builder()
                 .model("gpt-3.5-turbo")
                 .messages(List.of(
-                        new ChatMessage(ChatMessageRole.ASSISTANT.value(), "Act like a REST API endpoint. When you receive user input try to identify city mentioned in the message and respond in JSON format with city name, latitude and longitude."),
+                        new ChatMessage(ChatMessageRole.ASSISTANT.value(), "Act like a REST API endpoint. When you receive user input try to identify city mentioned in the message and respond in JSON format with city name in English, latitude and longitude."),
                         new ChatMessage(ChatMessageRole.USER.value(), message))
                 )
                 .build();

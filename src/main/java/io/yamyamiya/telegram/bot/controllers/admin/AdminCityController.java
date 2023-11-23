@@ -46,16 +46,30 @@ public class AdminCityController {
         cityService.deleteByName(name);
     }
 
+
     @GetMapping("/count")
     public int getCount(){
         return cityService.getCount();
     }
+
+    /**
+     * method for counting the number of users, having the same cityId in their DB
+     * provides the useful statistic of getting the most popular city
+     * @param id of the city
+     * @return number of users
+     */
 
     @GetMapping("/usercount/{id}")
     public int getUserCountByCityId(@PathVariable int id){
         return cityService.getUserCountByCityId(id);
     }
 
+    /**
+     * method for counting the number of cities for one specific user
+     * provides the useful statistic of frequency of requests with different cities for each user
+     * @param id of the user
+     * @return number of cities
+     */
     @GetMapping("/citycount/{id}")
     public int getCityCountByUserId(@PathVariable int id){
         return cityService.getCityCountByUserId(id);

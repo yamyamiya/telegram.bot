@@ -8,8 +8,6 @@ import io.yamyamiya.telegram.bot.service.CityService;
 import io.yamyamiya.telegram.bot.service.TaskService;
 import io.yamyamiya.telegram.bot.service.weather.WeatherForecast;
 import io.yamyamiya.telegram.bot.utils.Result;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.TaskScheduler;
 import org.springframework.scheduling.annotation.EnableScheduling;
@@ -48,8 +46,6 @@ public class ScheduleExecutor {
      * if corresponded entity has been deleted from the DB
      */
     private Map<String, ScheduledFuture<?>> futures = new HashMap<>();
-
-    private static Logger logger = LoggerFactory.getLogger(ScheduleExecutor.class);
 
     /**
      * method that schedules task to be executed at 9:00 every day
