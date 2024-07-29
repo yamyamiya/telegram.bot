@@ -1,21 +1,22 @@
-# Курсовой проект Telegram Bot 
-Автор: Ямщикова Ольга
+# Telegram Bot 
+Author: Iamshchikova Olga
 
-Документация: [https://yamyamiya.github.io/telegram.bot/](https://yamyamiya.github.io/telegram.bot/) 
+Documentation: [https://yamyamiya.github.io/telegram.bot/](https://yamyamiya.github.io/telegram.bot/) 
 
-Тема проекта: приложение телеграмм бот по предоставлению прогноза погоды.
-## Возможности
-Приложение, позволяющее: 
+Telegram bot application for providing weather forecast.
+## Features
+An application that allows you to:: 
 
-- получить прогноз погоды
-- при желании подписаться на ежедневный прогноз для желаемого города
-- отписаться 
-- админу доступны методы по получению различной статистики и т.д.
+- get a weather forecast
+- subscribe to a daily forecast for the desired city if desired
+- unsubscribe 
+- the admin has access to methods for obtaining various statistics, etc.
 
-## Настройки
-Приложение использует 4 переменные окружения для обеспечения безопасности и настроек:
-- `TELEGRAM_BOT_NAME` - имя телеграмм бота
-- `TELEGRAM_BOT_TOKEN` - токен для доступа к телеграмм API, предоставлен TelerammFather
-- `OPENAI_TOKEN` - токен для доступа к OpenAI API
-- `WEATHER_TOKEN` -токен для доступа к WeatherBit API 
+
+## Settings
+The application uses 4 environment variables for security and settings:
+- `TELEGRAM_BOT_NAME` - the name of the telegram bot
+- `TELEGRAM_BOT_TOKEN` - token for access to the telegram API, provided by TelerammFather
+- `OPENAI_TOKEN` - token for access to the OpenAI API
+- `WEATHER_TOKEN` - token for access to the WeatherBit
 
