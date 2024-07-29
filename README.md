@@ -1,5 +1,4 @@
 # Telegram Bot 
-Author: Iamshchikova Olga
 
 Documentation: [https://yamyamiya.github.io/telegram.bot/](https://yamyamiya.github.io/telegram.bot/) 
 
